@@ -7,7 +7,7 @@ steps:
     args:
       - 'run'
       - 'deploy'
-      - 'minha-aplicacao'
+      - 'rede-spoty'
       - '--image=gcr.io/gin-23-1/rede-spoty:latest'
       - '--platform=managed'
       - '--region=us-central1'
