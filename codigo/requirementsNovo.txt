@@ -1,0 +1,8 @@
+flask
+flask_cors
+numpy
+matplotlib
+networkx
+IPython
+spotipy==2.23.0
+uvicorn

@@ -1,5 +1,5 @@
 # Imports para abrir o servidor REST
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import json
 
@@ -15,19 +15,26 @@ from IPython.display import clear_output
 import json
 
 # importando arquivo .env com as credenciais do spotify
-from decouple import config
+#from dotenv import load_dotenv
+#from pathlib import Path
+#import os
+
+#env_path = Path(".") / ".env"
+#load_dotenv(dotenv_path=env_path)
 
 # importando itemgetter
 from operator import itemgetter
 
 # Definindo o server e instalando o CORS nele
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='',
+                  static_folder='build',
+                  template_folder='build')
 CORS(app)
 # app.run(debug=True)
 
 # Instanciando e conectando com a API do Spotify
-client_id = config('CLIENT_ID')
-client_secret = config('CLIENT_SECRET')
+client_id = '5e83547d01f84244b784835af55555e5'
+client_secret = 'f602e39571cb4f4ea834b0d632020209'
 
 credmanager = SpotifyClientCredentials(
     client_id=client_id, client_secret=client_secret)
@@ -63,6 +70,9 @@ def buscaMenoresQtdArestas(G):
     print(dictLinks)
     return dictLinks
 
+@app.route("/")
+def hello():
+    return render_template("index.html")
 
 @app.route('/spotigraph/grafo', methods=['POST'])
 def criarGrafo():
