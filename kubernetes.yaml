@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rede-spoty
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rede-spoty
+  template:
+    metadata:
+      labels:
+        app: rede-spoty
+    spec:
+      containers:
+        - name: rede-spoty
+          image: gcr.io/gin-23-1/rede-spoty:latest
+          ports:
+            - containerPort: 80

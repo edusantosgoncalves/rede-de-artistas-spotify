@@ -1,0 +1,12 @@
+#Configurações do prometheus
+prometheus:
+  alertmanager:
+    enabled: true
+  server:
+    persistentVolume:
+      enabled: false
+
+#Configurações do grafana
+grafana:
+  adminUser: admin
+  adminPassword: ginAdmin
