@@ -1,9 +1,9 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'Criando container'
     args: ['build', '-t', 'gcr.io/gin-23-1/rede-spoty', '.']
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'Enviando-o ao Container Registry do GCP'
     args: ['push', 'gcr.io/gin-23-1/rede-spoty']
-  - name: 'gcr.io/cloud-builders/gcloud'
+  - name: 'Deployando-o no GCP'
     args:
       - 'run'
       - 'deploy'
