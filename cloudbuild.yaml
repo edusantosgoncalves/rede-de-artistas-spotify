@@ -9,73 +9,34 @@ steps:
 
     #Criando o Kubernetes Engine para instanciar o container criado
     - name: 'gcr.io/cloud-builders/gcloud'
-      args: 
-        - 'container'
-        - 'clusters'
-        - 'create'
-        - 'cluster_rede_spoty'
-        - '--zone'
-        - 'us-central1'
-        - '--num-nodes'
-        - '2'
+      args: ['container', 'create', 'cluster_rede_spoty', '--zone', 'us-central1', '--num-nodes', '2']
 
     #Implantando o container criado na instancia Kubernetes
     - name: 'gcr.io/cloud-builders/kubectl'
-      args: 
-        - 'apply'
-        - '-f'
-        - 'kubernetes.yaml'
+      args: ['apply', '-f', 'kubernetes.yaml']
 
     #Inserindo o repositorio do helm-charts, grafana e prometheus via helm
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'repo'
-        - 'add'
-        - 'stable'
-        - 'https://charts.helm.sh/stable'
+      args: ['repo', 'add', 'stable', 'https://charts.helm.sh/stable']
 
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'repo'
-        - 'add'
-        - 'prometheus-community'
-        - 'https://prometheus-community.github.io/helm-charts'
+      args: ['repo', 'add', 'prometheus-community', 'https://prometheus-community.github.io/helm-charts']
     
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'repo'
-        - 'add'
-        - 'grafana'
-        - 'https://grafana.github.io/helm-charts'
+      args: ['repo', 'add', 'grafana', 'https://grafana.github.io/helm-charts']
 
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'repo'
-        - 'update'
+      args: ['repo', 'update']
 
     #Instalando o prometheus, alert manager e grafana (OBS: já existe o arquivo .yaml na área do projeto)
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'install'
-        - 'prometheus'
-        - 'prometheus-community/prometheus'
-        - '-f'
-        - 'prometheus-values.yaml'
+      args: ['install', 'prometheus', 'prometheus-community/prometheus', '-f', 'prometheus-values.yaml']
 
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'install'
-        - 'alertmanager'
-        - 'prometheus-community/alertmanager'
-        - '-f'
-        - 'alertmanager-values.yaml'
+      args: ['install', 'alertmanager', 'prometheus-community/alertmanager', '-f', 'alertmanager-values.yaml']
 
     - name: 'gcr.io/cloud-builders/helm'
-      args:
-        - 'install'
-        - 'grafana'
-        - 'grafana/grafana'
-
+      args: ['install', 'grafana', 'grafana/grafana']
 
     #Deployando o container criado - antigo
   #- name: 'gcr.io/cloud-builders/gcloud'
