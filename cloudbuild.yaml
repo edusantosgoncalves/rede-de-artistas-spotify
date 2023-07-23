@@ -19,6 +19,8 @@ steps:
         "us-central1",
         "--num-nodes",
         "2",
+        "--disk-size",
+        "25GB",
       ]
 
   #Implantando o container criado na instancia Kubernetes
