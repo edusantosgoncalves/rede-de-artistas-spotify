@@ -8,28 +8,30 @@ steps:
     args: ["push", "gcr.io/gin-23-1/rede-spoty"]
 
   #Verificando se já existe o cluster kubernetes
-  #- name: "gcr.io/cloud-builders/gcloud"
-  #id: check-cluster
-  #args:
-  #  - "container"
-  #  - "clusters"
-  #  - "describe"
-  #  - "cluster-rede-spoty"
-  #  - "--zone"
-  #  - "us-central1"
-  #waitFor: ["-"]
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: check-cluster
+    args:
+      - "container"
+      - "clusters"
+      - "describe"
+      - "cluster-rede-spoty"
+      - "--zone"
+      - "us-central1"
+    waitFor: ["-"]
+
   #Se existir, apague-o
-  #- name: "gcr.io/cloud-builders/gcloud"
-  #id: delete-cluster
-  #args:
-  #  - "container"
-  #  - "clusters"
-  #  - "delete"
-  #  - "cluster-rede-spoty"
-  #  - "--zone"
-  #  - "us-central1"
-  #  - "--quiet"
-  #waitFor: ["check-cluster"]
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: delete-cluster
+    args:
+      - "container"
+      - "clusters"
+      - "delete"
+      - "cluster-rede-spoty"
+      - "--zone"
+      - "us-central1"
+      - "--quiet"
+    waitFor: ["check-cluster"]
+
   #Criando o Kubernetes Engine para instanciar o container criado
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -45,7 +47,7 @@ steps:
         "--disk-size",
         "25GB",
       ]
-    #waitFor: ["delete-cluster"]
+    waitFor: ["delete-cluster"]
 
   #Implantando o container criado na instancia Kubernetes
   - name: "gcr.io/cloud-builders/kubectl"
