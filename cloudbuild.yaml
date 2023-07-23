@@ -14,7 +14,7 @@ steps:
         "container",
         "clusters",
         "create",
-        "cluster_rede_spoty",
+        "cluster-rede-spoty",
         "--zone",
         "us-central1",
         "--num-nodes",
