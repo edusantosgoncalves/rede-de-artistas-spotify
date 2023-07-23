@@ -14,9 +14,9 @@ steps:
       - "container"
       - "clusters"
       - "describe"
-      - "$CLOUDSDK_CONTAINER_CLUSTER"
+      - "cluster-rede-spoty"
       - "--zone"
-      - "$_CLOUDSDK_COMPUTE_ZONE"
+      - "us-central1"
     entrypoint: "bash"
     waitFor: ["-"]
 
@@ -27,9 +27,9 @@ steps:
       - "container"
       - "clusters"
       - "delete"
-      - "$CLOUDSDK_CONTAINER_CLUSTER"
+      - "cluster-rede-spoty"
       - "--zone"
-      - "$_CLOUDSDK_COMPUTE_ZONE"
+      - "us-central1"
       - "--quiet"
     entrypoint: "bash"
     waitFor: ["check-cluster"]
@@ -41,9 +41,9 @@ steps:
       - "container"
       - "clusters"
       - "create"
-      - "$CLOUDSDK_CONTAINER_CLUSTER" # Substitua pelo nome do seu cluster GKE
+      - "cluster-rede-spoty" # Substitua pelo nome do seu cluster GKE
       - "--zone"
-      - "$_CLOUDSDK_COMPUTE_ZONE" # Substitua pela zona onde o cluster será criado
+      - "us-central1" # Substitua pela zona onde o cluster será criado
     entrypoint: "bash"
     waitFor: ["delete-cluster"]
 
@@ -54,9 +54,9 @@ steps:
         "container",
         "clusters",
         "create",
-        "$CLOUDSDK_CONTAINER_CLUSTER",
+        "cluster-rede-spoty",
         "--zone",
-        "$CLOUDSDK_COMPUTE_ZONE",
+        "us-central1",
         "--num-nodes",
         "2",
         "--disk-size",
@@ -66,6 +66,11 @@ steps:
   #Implantando o container criado na instancia Kubernetes
   - name: "gcr.io/cloud-builders/kubectl"
     args: ["apply", "-f", "kubernetes.yaml"]
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
+      ]
 
   #Inserindo o repositorio do helm-charts, grafana e prometheus via helm
   - name: "gcr.io/cloud-builders/helm"
@@ -123,8 +128,3 @@ steps:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-
-substitutions:
-  #_CLOUDSDK_COMPUTE_REGION: us-central1
-  _CLOUDSDK_COMPUTE_ZONE: us-central1
-  _CLOUDSDK_CONTAINER_CLUSTER: cluster-rede-spoty
