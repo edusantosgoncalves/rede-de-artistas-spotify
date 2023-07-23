@@ -17,7 +17,6 @@ steps:
       - "cluster-rede-spoty"
       - "--zone"
       - "us-central1"
-    entrypoint: "bash"
     waitFor: ["-"]
 
   #Se existir, apague-o
@@ -31,7 +30,6 @@ steps:
       - "--zone"
       - "us-central1"
       - "--quiet"
-    entrypoint: "bash"
     waitFor: ["check-cluster"]
 
   #Recriando-o
@@ -41,10 +39,9 @@ steps:
       - "container"
       - "clusters"
       - "create"
-      - "cluster-rede-spoty" # Substitua pelo nome do seu cluster GKE
+      - "cluster-rede-spoty"
       - "--zone"
-      - "us-central1" # Substitua pela zona onde o cluster será criado
-    entrypoint: "bash"
+      - "us-central1"
     waitFor: ["delete-cluster"]
 
   #Criando o Kubernetes Engine para instanciar o container criado
