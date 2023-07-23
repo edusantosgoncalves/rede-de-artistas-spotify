@@ -16,4 +16,17 @@ spec:
         - name: rede-spoty
           image: gcr.io/gin-23-1/rede-spoty:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rede-spoty-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: rede-spoty
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
