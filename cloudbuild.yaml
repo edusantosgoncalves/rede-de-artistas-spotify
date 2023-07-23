@@ -12,7 +12,7 @@ steps:
     args:
       [
         "container",
-        "clusters"
+        "clusters",
         "create",
         "cluster_rede_spoty",
         "--zone",
