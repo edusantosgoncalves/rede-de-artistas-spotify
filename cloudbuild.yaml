@@ -58,59 +58,7 @@ steps:
         "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
       ]
 
-  #Inserindo o repositorio do helm-charts, grafana e prometheus via helm
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args: ["repo", "add", "stable", "https://charts.helm.sh/stable"]
-
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args:
-      [
-        "repo",
-        "add",
-        "prometheus-community",
-        "https://prometheus-community.github.io/helm-charts",
-      ]
-
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args: ["repo", "add", "grafana", "https://grafana.github.io/helm-charts"]
-
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args: ["repo", "update"]
-
-  #Instalando o prometheus, alert manager e grafana (OBS: já existe o arquivo .yaml na área do projeto)
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args:
-      [
-        "install",
-        "prometheus",
-        "prometheus-community/prometheus",
-        "-f",
-        "prometheus-values.yaml",
-      ]
-
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args:
-      [
-        "install",
-        "alertmanager",
-        "prometheus-community/alertmanager",
-        "-f",
-        "alertmanager-values.yaml",
-      ]
-
-  - name: "gcr.io/gin-23-1/cloud-builders-helm"
-    args: ["install", "grafana", "grafana/grafana"]
-
-    #Deployando o container criado - antigo
-  #- name: 'gcr.io/cloud-builders/gcloud'
-  # args:
-  #  - 'run'
-  #  - 'deploy'
-  #  - 'rede-spoty'
-  #  - '--image=gcr.io/gin-23-1/rede-spoty:latest'
-  #  - '--platform=managed'
-  #  - '--region=us-central1'
-  #  - '--allow-unauthenticated'
+  #É necessário instalar e atualizar manualmente via GCP os repositórios do HELM que serão utilizados para monitoramento
 
 options:
   logging: CLOUD_LOGGING_ONLY
