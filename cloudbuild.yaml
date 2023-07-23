@@ -32,18 +32,6 @@ steps:
       - "--quiet"
     waitFor: ["check-cluster"]
 
-  #Recriando-o
-  - name: "gcr.io/cloud-builders/gcloud"
-    id: create-cluster
-    args:
-      - "container"
-      - "clusters"
-      - "create"
-      - "cluster-rede-spoty"
-      - "--zone"
-      - "us-central1"
-    waitFor: ["delete-cluster"]
-
   #Criando o Kubernetes Engine para instanciar o container criado
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -59,6 +47,7 @@ steps:
         "--disk-size",
         "25GB",
       ]
+    waitFor: ["delete-cluster"]
 
   #Implantando o container criado na instancia Kubernetes
   - name: "gcr.io/cloud-builders/kubectl"
