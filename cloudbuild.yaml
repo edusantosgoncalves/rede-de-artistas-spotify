@@ -16,9 +16,49 @@ steps:
         "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
       ]
 
+  #Removendo o deployment do container
+  - name: "gcr.io/cloud-builders/kubectl"
+    args: ["delete", "deployments", "rede-spoty"]
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
+      ]
+
   #Atualizando o container criado na instancia Kubernetes
   - name: "gcr.io/cloud-builders/kubectl"
-    args: ["apply", "-f", "kubernetes.yaml"]
+    args:
+      [
+        "create",
+        "deployment",
+        "rede-spoty",
+        "--image",
+        "gcr.io/gin-23-1/rede-spoty:latest",
+      ]
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
+      ]
+
+  #Expondo o container criado na instância a um ip externo
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      [
+        "expose",
+        "deployment",
+        "rede-spoty",
+        "--name",
+        "rede-spoty-service",
+        "--type",
+        "LoadBalancer",
+        "--protocol",
+        "TCP",
+        "--port",
+        "8080",
+        "--target-port",
+        "8080",
+      ]
     env:
       [
         "CLOUDSDK_COMPUTE_REGION=us-central1",
