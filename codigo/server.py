@@ -278,6 +278,10 @@ def retornaTops(lista):
     return {'topMais': topMais, 'topMenos': topMenos}
 
 
+@app.route("/")
+def hello():
+    return render_template("index.html")
+
 @app.route('/spotigraph/grafo3', methods=['POST'])
 def criarGrafo3():
     # Pegando item do body do request
