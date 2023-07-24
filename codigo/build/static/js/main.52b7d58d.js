@@ -37016,10 +37016,7 @@
                           onClick: function () {
                             "id" in X &&
                               (K(!0),
-                              Zn.post(
-                                "https://server-spotigraph.onrender.com/spotigraph/grafo3",
-                                X
-                              )
+                              Zn.post("/spotigraph/grafo3", X)
                                 .then(function (e) {
                                   console.log(e.data),
                                     _({
