@@ -1,0 +1,64 @@
+steps:
+  #Criando o container
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/gin-23-1/rede-spoty", "."]
+
+  #Enviando-o ao container registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/gin-23-1/rede-spoty"]
+
+  #Verificando se já existe o cluster kubernetes
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: check-cluster
+    args:
+      - "container"
+      - "clusters"
+      - "describe"
+      - "cluster-rede-spoty"
+      - "--zone"
+      - "us-central1"
+    waitFor: ["-"]
+
+  #Se existir, apague-o
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: delete-cluster
+    args:
+      - "container"
+      - "clusters"
+      - "delete"
+      - "cluster-rede-spoty"
+      - "--zone"
+      - "us-central1"
+      - "--quiet"
+    waitFor: ["check-cluster"]
+
+  #Criando o Kubernetes Engine para instanciar o container criado
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "container",
+        "clusters",
+        "create",
+        "cluster-rede-spoty",
+        "--zone",
+        "us-central1",
+        "--num-nodes",
+        "2",
+        "--disk-size",
+        "25GB",
+      ]
+    waitFor: ["delete-cluster"]
+
+  #Implantando o container criado na instancia Kubernetes
+  - name: "gcr.io/cloud-builders/kubectl"
+    args: ["apply", "-f", "kubernetes.yaml"]
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
+      ]
+
+  #É necessário instalar e atualizar manualmente via GCP os repositórios do HELM que serão utilizados para monitoramento
+
+options:
+  logging: CLOUD_LOGGING_ONLY
