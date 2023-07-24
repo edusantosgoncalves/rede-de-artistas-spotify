@@ -7,6 +7,15 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/gin-23-1/rede-spoty"]
 
+  #Removendo o serviço do container já instanciado na instancia kubernetes
+  - name: "gcr.io/cloud-builders/kubectl"
+    args: ["delete", "service", "rede-spoty"]
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-rede-spoty",
+      ]
+
   #Atualizando o container criado na instancia Kubernetes
   - name: "gcr.io/cloud-builders/kubectl"
     args: ["apply", "-f", "kubernetes.yaml"]
